@@ -1,14 +1,15 @@
-import React from 'react';
-import Item from './Item';
+import Item from "../Item/Item"
 
-const ItemList = ({ items }) => {
-  return (
-    <div>
-      {items.map(item => (
-        <Item key={item.id} item={item} />
-      ))}
-    </div>
-  );
-};
+const ItemList = ({ products }) => {
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column'}} onClick={() => console.log('hice click en itemlist')}>
+            {
+                products?.map((product) => {
+                    return <Item key={product.id} {...product}/>
+                })
+            }
+        </div>
+    )
+}
 
-export default ItemList;
+export default ItemList

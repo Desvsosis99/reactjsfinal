@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const CartEmpty = () => {
   return (
     <div>
-      <p>Tu carrito está vacío.</p>
+      <p>El carrito está vacío</p>
       <Link to="/">Volver a la tienda</Link>
     </div>
   );

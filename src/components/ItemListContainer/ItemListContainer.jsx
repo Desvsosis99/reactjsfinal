@@ -1,15 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import ItemList from './ItemList';
+import { memo } from "react"
+import ItemList from "../ItemList/ItemList"
+import { useParams } from "react-router-dom"
+import { getProducts } from "../../services/firebase/firestore/products"
+import { useAsync } from "../../hooks/useAsync"
 
-const ItemListContainer = ({ category }) => {
-  const [items, setItems] = useState([]);
+const ItemListMemoized = memo(ItemList)
 
-  useEffect(() => {
-    // Aquí deberías cargar los items según la categoría
-    setItems(/* array de productos */);
-  }, [category]);
+const ItemListContainer = ({ greeting }) => {                               
+    const { categoryId } = useParams()
+    
+    const asyncFunction = () =>  getProducts(categoryId)
+    
+    const { data: products, loading, error } = useAsync(asyncFunction, [categoryId])
+    
+    if(loading) {
+        return <h1>Se estan cargando los productos...</h1>
+    }
 
-  return <ItemList items={items} />;
-};
+    if(error) {
+        return <h1>Hubo un error al cargar los productos</h1>
+    }
 
-export default ItemListContainer;
+    return (
+        <div style={{ background: 'orange'}} onClick={() => console.log('hice click en itemlistcontainer')}>
+            <h1>{ greeting }</h1>
+            <ItemListMemoized products={products}/>
+        </div>
+    )
+}
+
+export default ItemListContainer
