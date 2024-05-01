@@ -10,6 +10,7 @@ const Checkout = () => {
     const [buyer, setBuyer] = useState({
         name: '',
         email: '',
+        confirmEmail: '',
         phone: ''
     });
 
@@ -20,11 +21,13 @@ const Checkout = () => {
         });
     };
 
-    const isFormValid = () => buyer.name && buyer.email && buyer.phone;
+    const isFormValid = () => {
+        return buyer.name && buyer.email && buyer.phone && buyer.email === buyer.confirmEmail;
+    };
 
     const createOrder = async () => {
         if (!isFormValid()) {
-            alert("Por favor, complete todos los campos.");
+            alert("Por favor, complete todos los campos y asegúrese de que los correos electrónicos coincidan.");
             return;
         }
         setLoading(true);
@@ -39,16 +42,12 @@ const Checkout = () => {
             const batch = writeBatch(db);
             const outOfStock = [];
             const ids = cart.map(prod => prod.id);
-
             const productsCollection = query(collection(db, 'products'), where(documentId(), 'in', ids));
-
             const querySnapshot = await getDocs(productsCollection);
-            const { docs } = querySnapshot;
 
-            docs.forEach(doc => {
+            querySnapshot.docs.forEach(doc => {
                 const data = doc.data();
                 const stockDb = data.stock;
-
                 const productAddedToCart = cart.find(prod => prod.id === doc.id);
                 const prodQuantity = productAddedToCart ? productAddedToCart.quantity : 0;
 
@@ -61,7 +60,6 @@ const Checkout = () => {
 
             if (outOfStock.length === 0) {
                 await batch.commit();
-
                 const orderCollection = collection(db, 'orders');
                 const { id } = await addDoc(orderCollection, objOrder);
                 
@@ -109,13 +107,20 @@ const Checkout = () => {
             <h1>Checkout</h1>
             <form>
                 <div className="mb-3">
-                    <input type="text" className="form-control" name="name" placeholder="Nombre" value={buyer.name} onChange={handleInputChange} />
+                    <label htmlFor="name" className="form-label">Nombre</label>
+                    <input type="text" className="form-control" id="name" name="name" placeholder="Ingrese su nombre" value={buyer.name} onChange={handleInputChange} />
                 </div>
                 <div className="mb-3">
-                    <input type="email" className="form-control" name="email" placeholder="Email" value={buyer.email} onChange={handleInputChange} />
+                    <label htmlFor="email" className="form-label">Email</label>
+                    <input type="email" className="form-control" id="email" name="email" placeholder="Ingrese su email" value={buyer.email} onChange={handleInputChange} />
                 </div>
                 <div className="mb-3">
-                    <input type="phone" className="form-control" name="phone" placeholder="Teléfono" value={buyer.phone} onChange={handleInputChange} />
+                    <label htmlFor="confirmEmail" className="form-label">Confirmar Email</label>
+                    <input type="email" className="form-control" id="confirmEmail" name="confirmEmail" placeholder="Confirme su email" value={buyer.confirmEmail} onChange={handleInputChange} />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="phone" className="form-label">Teléfono</label>
+                    <input type="phone" className="form-control" id="phone" name="phone" placeholder="Ingrese su teléfono" value={buyer.phone} onChange={handleInputChange} />
                 </div>
                 <button className="btn btn-primary" onClick={createOrder} disabled={!isFormValid()}>Generar orden de compras</button>
             </form>
