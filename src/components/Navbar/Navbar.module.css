@@ -1,56 +1,33 @@
-.navbar {
-    background-color: #004d99;
-    color: #ffffff;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-  }
-  
-  .navbar-brand {
-    font-size: 1.8rem; 
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold; 
-  }
-  
-  .navbar-menu {
-    display: flex;
-    list-style: none; 
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navbar-menu li {
-    padding: 0 15px; 
-  }
-  
-  .navbar-menu a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1.1rem; 
-    transition: color 0.3s ease; 
-  }
-  
-  .navbar-menu a:hover {
-    color: #ffa500; 
-  }
-  
+/* Navbar.module.css */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: white;
+}
 
-  @media (max-width: 768px) {
-    .navbar-menu {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .navbar-menu li {
-      padding: 10px 0; 
-    }
-  }
-  
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem;
+  transition: color 0.3s ease-in-out;
+}
+
+
+/* Estilos para el título principal que también funciona como botón para volver al inicio */
+.header h2 {
+  margin: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.header h2:hover {
+  transform: scale(1.1);
+}

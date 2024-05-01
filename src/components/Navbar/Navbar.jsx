@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { collection, getDocs, orderBy, query, limit } from 'firebase/firestore'
 import { db } from '../../services/firebase/firebaseConfig'
-
 const Navbar = () => {
     const [categories, setCategories] = useState([])
     const navigate = useNavigate()
@@ -27,7 +26,7 @@ const Navbar = () => {
 
     return (
         <header className={classes.header}>
-           <h2 onClick={() => navigate('/')} style={{ color: 'red', fontSize: 10, cursor: 'pointer'}}>Ecommerce 54045</h2> 
+           <h2 onClick={() => navigate('/')} style={{ color: 'white', fontSize: 24, cursor: 'pointer'}}>Hakkens Digital</h2> 
            <nav>
                 {
                     categories.map(cat => {

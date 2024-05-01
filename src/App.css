@@ -1,8 +1,25 @@
-body {
-  padding-top: 20px;
-  background-color: #f8f9fa;
+/* App.css */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
 }
 
-.container {
-  padding: 20px;
+.header {
+  background-color: #004466;
+  color: #ffffff;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.footer {
+  background-color: #002233;
+  color: #ffffff;
+  text-align: center;
+  padding: 10px 20px;
+}
+
+.main {
+  min-height: 80vh;
 }
