@@ -8,7 +8,9 @@ const Checkout = () => {
     const [orderId, setOrderId] = useState(null);
     const { cart, total, clearCart } = useContext(CartContext);
     const [buyer, setBuyer] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
+        motherLastName: '',
         email: '',
         confirmEmail: '',
         phone: ''
@@ -22,7 +24,7 @@ const Checkout = () => {
     };
 
     const isFormValid = () => {
-        return buyer.name && buyer.email && buyer.phone && buyer.email === buyer.confirmEmail;
+        return buyer.firstName && buyer.lastName && buyer.motherLastName && buyer.email && buyer.phone && buyer.email === buyer.confirmEmail;
     };
 
     const createOrder = async () => {
@@ -32,7 +34,13 @@ const Checkout = () => {
         }
         setLoading(true);
         const objOrder = {
-            buyer,
+            buyer: {
+                firstName: buyer.firstName,
+                lastname: buyer.lastName,
+                motherLastname: buyer.motherLastName,
+                email: buyer.email,
+                phone: buyer.phone
+            },
             items: cart,
             total,
             date: Timestamp.fromDate(new Date())
@@ -85,7 +93,7 @@ const Checkout = () => {
             </div>
         );
     }
-    
+
     if (orderId) {
         return (
             <div className="container mt-5 text-center">
@@ -95,9 +103,7 @@ const Checkout = () => {
                     <h4 className="alert-heading">Confirmación de Orden</h4>
                     El ID de su orden es: <strong>{orderId}</strong>
                 </div>
-                <div className="mt-4">
-                    <button className="btn btn-primary btn-lg" onClick={() => window.location.href = '/'}>Continuar Comprando</button>
-                </div>
+                <button className="btn btn-primary btn-lg" onClick={() => window.location.href = '/'}>Continuar Comprando</button>
             </div>
         );
     }
@@ -107,20 +113,28 @@ const Checkout = () => {
             <h1>Checkout</h1>
             <form>
                 <div className="mb-3">
-                    <label htmlFor="name" className="form-label">Nombre</label>
-                    <input type="text" className="form-control" id="name" name="name" placeholder="Ingrese su nombre" value={buyer.name} onChange={handleInputChange} />
+                    <label htmlFor="firstName" className="form-label">Nombre</label>
+                    <input type="text" className="form-control" id="firstName" name="firstName" placeholder="Ingrese su nombre" value={buyer.firstName} onChange={handleInputChange} required />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="lastName" className="form-label">Apellido Paterno</label>
+                    <input type="text" className="form-control" id="lastName" name="lastName" placeholder="Apellido paterno" value={buyer.lastName} onChange={handleInputChange} required />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="motherLastName" className="form-label">Apellido Materno</label>
+                    <input type="text" className="form-control" id="motherLastName" name="motherLastName" placeholder="Apellido materno" value={buyer.motherLastName} onChange={handleInputChange} required />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email</label>
-                    <input type="email" className="form-control" id="email" name="email" placeholder="Ingrese su email" value={buyer.email} onChange={handleInputChange} />
+                    <input type="email" className="form-control" id="email" name="email" placeholder="Ingrese su email" value={buyer.email} onChange={handleInputChange} required />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="confirmEmail" className="form-label">Confirmar Email</label>
-                    <input type="email" className="form-control" id="confirmEmail" name="confirmEmail" placeholder="Confirme su email" value={buyer.confirmEmail} onChange={handleInputChange} />
+                    <input type="email" className="form-control" id="confirmEmail" name="confirmEmail" placeholder="Confirme su email" value={buyer.confirmEmail} onChange={handleInputChange} required />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="phone" className="form-label">Teléfono</label>
-                    <input type="phone" className="form-control" id="phone" name="phone" placeholder="Ingrese su teléfono" value={buyer.phone} onChange={handleInputChange} />
+                    <input type="tel" className="form-control" id="phone" name="phone" placeholder="Ingrese su teléfono" value={buyer.phone} onChange={handleInputChange} required />
                 </div>
                 <button className="btn btn-primary" onClick={createOrder} disabled={!isFormValid()}>Generar orden de compras</button>
             </form>
